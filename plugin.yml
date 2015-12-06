@@ -1,0 +1,7 @@
+name: MCPPunish
+main: net.ryanhecht.punish.Main
+version: 0.1
+description: Here comes the whip
+author: RyanHecht_
+commands:
+  punish:
