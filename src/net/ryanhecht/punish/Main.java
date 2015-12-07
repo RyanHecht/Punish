@@ -46,8 +46,8 @@ public class Main extends JavaPlugin {
 			statement.execute("CREATE TABLE IF NOT EXISTS Punishments("
 									+ "Player varchar(16), "
 									+ "Punisher varchar(16), "
-									+ "Reason enum('grief1','grief2','grief3','grief4','grief5','hacks','permex','','','','disrespect','spam','lang','other'), "
-									+ "Time timestamp(12))");
+									+ "Reason enum('grief1','grief2','grief3','grief4','grief5','hacks','permex','disrespect','spam','lang','other'), "
+									+ "Time timestamp )");
 		getLogger().info("Created table successfully.");
 		} catch (SQLException e) {
 			e.printStackTrace();
