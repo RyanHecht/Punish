@@ -47,7 +47,9 @@ public class Main extends JavaPlugin {
 									+ "Player varchar(16), "
 									+ "Punisher varchar(16), "
 									+ "Reason enum('grief1','grief2','grief3','grief4','grief5','hacks','permex','disrespect','spam','lang','other'), "
-									+ "Time timestamp )");
+									+ "Time timestamp, "
+									+ "UUID varchar(50), "
+									+ "OtherNames varchar(100) )");
 		getLogger().info("Created table successfully.");
 		} catch (SQLException e) {
 			e.printStackTrace();
