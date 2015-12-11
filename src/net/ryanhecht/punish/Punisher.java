@@ -1,9 +1,13 @@
 package net.ryanhecht.punish;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
 import net.ryanhecht.util.*;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,7 +16,7 @@ import org.bukkit.entity.Player;
 
 
 public class Punisher implements CommandExecutor {
-
+public static ArrayList<String> reasons = new ArrayList<String>();
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
 		Player player;
@@ -59,24 +63,7 @@ public class Punisher implements CommandExecutor {
 		return false;
 	}
 	public boolean isReason(String potreason) {
-		ResultSet reasonsq;
-		//gets possible punish reasons. I'm sure there's a more efficient way, but yolo
-				String strreasons="";
-				ArrayList<String> reasons = new ArrayList<String>();
-				try {
-					reasonsq = Main.statement.executeQuery("SHOW COLUMNS FROM Punishments LIKE 'Reason'");
-						reasonsq.next();
-						strreasons=reasonsq.getString("Type").substring(reasonsq.getString("Type").indexOf("enum")+5);
-						strreasons=strreasons.replace("'", "");
-						strreasons=strreasons.replace(")", "");
-						for(String s : strreasons.split(",")) {
-							reasons.add(s);
-						}
-					
-				} catch (SQLException e) {
-					
-					e.printStackTrace();
-				}
+
 				
 				for(String s : reasons) {
 					if(potreason.equalsIgnoreCase(s)) {
@@ -86,8 +73,22 @@ public class Punisher implements CommandExecutor {
 				return false;
 	}
 	public void addRecord(String user, String punisher, String reason) throws SQLException {
+		Connection c;
+		Statement s;
 		try {
-			Main.statement.executeUpdate("INSERT INTO Punishments VALUES ('" + user +"' , '" +punisher+"' , '" + reason + "' , " + "CURRENT_TIMESTAMP" + ", '" + getUUID.get(user.toString()) + "', null )");
+			c=DatabaseUtility.connect();
+		}
+		catch (SQLException e) {
+			throw e;
+		}
+		try {
+			s=c.createStatement();
+		}
+		catch (SQLException e) {
+			throw e;
+		}
+		try {
+			s.executeUpdate("INSERT INTO Punishments VALUES ('" + user +"' , '" +punisher+"' , '" + reason + "' , " + "CURRENT_TIMESTAMP" + ", '" + getUUID.get(user.toString()) + "', null )");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
